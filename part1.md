@@ -351,7 +351,7 @@ template<typename T, template< typename ELEM, typename ALLOC = std::allocator<EL
 class Hoge {
 
 };
-```cpp
+```
 
 のようにする必要がある。  
 
@@ -376,8 +376,8 @@ template<typename T, template<typename, typename> class CONT = std::vector>
     見かけ上の先頭の要素が配列の何番目にあるかを変数に格納する。  
     atではそこからの番号の要素を参照、updateでその番号を一つずらす。  
 
-発展問題
-    2. で作ったクラスを以下の要件で拡張し挙動を確認せよ。  
+発展問題  
+    2で作ったクラスを以下の要件で拡張し挙動を確認せよ。  
     ・at関数やoperator[]で配列外参照したときにout_of_rangeをthrowする。  
     ・要素を管理するクラスを指定できるようにして、デフォルトをstd::vectorにする。  
     その際、テンプレートテンプレートパラメータを用いること。  
