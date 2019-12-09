@@ -31,9 +31,9 @@ int main() {
         2.71f
     };
 
-    printArrayI(arr);
+    printArrayI(arr, 3);
     std::cout << "\n";
-    printArrayF(arr2);
+    printArrayF(arr2, 2);
 
     return 0;
 }
@@ -52,7 +52,7 @@ int main() {
 #include<iostream>
 
 template<typename T>
-void pringArray(T *t, size_t size) {
+void printArray(T *t, size_t size) {
     for(size_t i = 0; i < size; i++) {
         std::cout << t[i] << "\n";
     }
@@ -86,7 +86,7 @@ template<typename T>
 
 この関数を利用するときは、  
 ```cpp
-printArray<int>(arr);
+printArray<int>(arr, 3);
 ```
 のように関数名の後ろに<>で型を指定して、通常の関数同様引数を指定する。  
 こうすることで、コンパイラがあいまいな型Tをintに補完して関数を作成される。  
@@ -95,7 +95,7 @@ printArray<int>(arr);
 
 今回のように引数から型が推測できるときには  
 ```cpp
-printArray(arr);
+printArray(arr, 3);
 ```
 としても適切にコンパイルされる。  
 
@@ -272,7 +272,7 @@ std::vector<std::vector<int>> obj;
 しかし古いコンパイラではintの後の>>がシフト演算子にみなされてコンパイルエラーになってしまう。  
 そのときは
 ```cpp
-std::vector< std::vector<int> >
+std::vector< std::vector<int> > obj;
 ```
 のように適宜スペースを入れる必要がある。  
 
@@ -367,16 +367,16 @@ template<typename T, template<typename, typename> class CONT = std::vector>
 1. テンプレートパラメータを一つもち、デフォルトコンストラクタでnewしてそのポインタを返す関数makeを作り挙動を確認せよ。  
 受け取ったポインタをdeleteするのを忘れないこと。  
 2. 以下の条件でqueue的な固定長配列クラスを作成し挙動を確認せよ。  
-・要素の管理はvectorでおこなう。(std::arrayの方が好ましい)  
+・要素の管理はC配列でおこなう。(std::arrayの方が好ましい)  
 ・要素番号を引数としてもらってその要素への参照を返すメンバ関数atを作成する。(operator[]でもいい)  
-・先頭の要素を削除して同時に末尾に要素を追加するメンバ関数updateを作成する。  
+・先頭に要素を追加し、同時に末尾の要素を削除するメンバ関数pushを作成する。  
 
     ヒント  
     見かけ上の先頭の要素と実際のvector等の配列に入っている要素の先頭は異なる。  
     見かけ上の先頭の要素が配列の何番目にあるかを変数に格納する。  
     atではそこからの番号の要素を参照、updateでその番号を一つずらす。  
 
-発展問題  
+## 発展問題  
     2で作ったクラスを以下の要件で拡張し挙動を確認せよ。  
     ・at関数やoperator[]で配列外参照したときにout_of_rangeをthrowする。  
     ・要素を管理するクラスを指定できるようにして、デフォルトをstd::vectorにする。  
