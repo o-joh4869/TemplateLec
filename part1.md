@@ -308,6 +308,64 @@ template<int size>
 
 コンパイル時にリテラル値に置き換えたようにできるため、静的な固定長配列を作成することができる。  
 
+# 明示的特殊化
+
+ある関数テンプレートにおいて、特定の型の場合にのみ別の挙動をさせたいことがたびたびある。  
+このとき明示的特殊化と呼ばれるもので記述できる。  
+```cpp
+//通常の関数テンプレート
+template<typename T, typename U>
+T max(const T &t, const U &u) {
+    return t > u ? t : u;
+}
+
+//明示的特殊化
+template<>
+bool max<bool, bool>(bool t, bool u) {
+    return t || u;
+}
+
+//部分的特殊化
+template<typename T, typename U>
+T *max(const T *t, const U *u) {
+    return (*t) > (*u) ? t : u;
+}
+```
+
+二つ目のところでboolについて特殊化している。  
+明示的特殊化は、
+```cpp
+template<typename T>
+```
+のようにしていたところを
+```cpp
+template<>
+```
+として、その後に記述する関数名やクラス名に
+```cpp
+T f<bool>() {
+}
+```
+としてパラメータリストを指定し、その中身を記述する。  
+
+ソースコードではbool型二つの場合に特殊化していて、この場合わざわざ比べるまでもなくorを取って上げればいいのでその内容を記述した。  
+また今回の場合、引数から型を推論できるので
+```cpp
+template<>
+bool max(bool t, bool u) {
+}
+```
+としてもいい。  
+
+部分的特殊化は、必要なテンプレートパラメータだけを残したリストを作成して、一部指定しながら定義する。  
+今回で言えば、
+```cpp
+template<typename T, typename U>
+T *max(const T *t, const U *u) {
+}
+```
+とすることで引数が両方ポインタ型だった場合に呼ばれる。  
+
 # テンプレートテンプレートパラメータ
 
 テンプレート引数にテンプレートクラスが指定されることがわかっているとき、テンプレートパラメータの指定の仕方を変更して引数に渡せる型を制限することができる。  
@@ -382,3 +440,4 @@ template<typename T, template<typename, typename> class CONT = std::vector>
     ・要素を管理するクラスを指定できるようにして、デフォルトをstd::vectorにする。  
     その際、テンプレートテンプレートパラメータを用いること。  
     挙動の確認にはstd::vectorとstd::dequeを用いるとよい。  
+    ・要素を管理するクラスにstd::listが指定されたとき、operator[]がstd::listのメンバに存在しないためエラーになってしまう。明示的特殊化を用いてこれを解決せよ。  
