@@ -330,7 +330,7 @@ class Hoge{
 //明示的完全特殊化
 //Hogeというクラスをキーとしてstring型のものを得る関数
 template<>
-std::string &&GetClassName<Hoge>() {
+std::string GetClassName<Hoge>() {
     return "Hoge";
 }
 ```
